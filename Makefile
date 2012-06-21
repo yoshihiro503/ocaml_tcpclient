@@ -26,6 +26,7 @@ CAMLC:=$(CAMLBIN)ocamlc.opt -c
 CAMLOPTC:=$(CAMLBIN)ocamlopt.opt -c
 CAMLLINK:=$(CAMLBIN)ocamlc.opt
 CAMLOPTLINK:=$(CAMLBIN)ocamlopt.opt
+CAMLDOC:=$(CAMLBIN)ocamldoc.opt
 
 ###################################
 #                                 #
@@ -43,6 +44,7 @@ CMXFILES:=$(MLFILES:.ml=.cmx)
 CMXSFILES:=$(MLFILES:.ml=.cmxs)
 CMXSFILES0:=$(filter-out ,$(CMXSFILES))
 OFILES:=$(MLFILES:.ml=.o)
+MLIFILES:=$(MLFILES:.ml=.mli)
 
 all: $(SUBREPOSITORIES) $(CMOFILES) $(CMXSFILES) 
 
@@ -100,19 +102,6 @@ archclean:
 
 
 #API Documents (ocamldoc,coqdoc)
-html: $(CMIFILES)
-	mkdir -p ocamldoc
-	mkdir -p coqdoc
-	ocamldoc -d ocamldoc -html $(MLFILES)
-	$(MAKE) -f Makefile.coq html
-	cp coq/html/* coqdoc/
-
-
-# Verification (optional)
-Makefile.coq: Make.coq
-	mv -f Makefile.coq Makefile.coq.bak
-	$(COQBIN)coq_makefile -f Make.coq -o Makefile.coq
-
-verification: Makefile.coq
-	$(MAKE) -f Makefile.coq
-	cp coq/*.ml coq/*.mli ./
+html: $(SUBREPOSITORIES) $(MLIFILES)
+	mkdir -p html/ocamldoc
+	$(CAMLDOC) -I $(UTIL) -d html/ocamldoc -html $(MLIFILES)
