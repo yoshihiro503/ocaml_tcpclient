@@ -35,7 +35,8 @@ CAMLDOC:=$(CAMLBIN)ocamldoc.opt
 ###################################
 
 MLFILES:= \
-	socket.ml
+	socket.ml \
+	http.ml
 CMOFILES:=$(MLFILES:.ml=.cmo)
 CMOFILES0:=$(filter-out ,$(CMOFILES))
 CMIFILES:=$(MLFILES:.ml=.cmi)
