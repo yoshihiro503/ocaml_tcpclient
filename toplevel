@@ -1,0 +1,5 @@
+#!/bin/sh
+rm -f mytop
+make all
+ocamlfind ocamlmktop -package str,unix -linkpkg -I ocaml_util fromCoq.cmo util.cmo stringUtil.cmo socket.cmo http.cmo -o mytop
+rlwrap ./mytop -I ocaml_util
